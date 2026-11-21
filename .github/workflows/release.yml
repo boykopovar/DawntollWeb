@@ -1,0 +1,42 @@
+name: Release static site
+on:
+  push:
+    tags: ['v*', '0.1.0']
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages-release
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run build
+      - name: Package website
+        run: |
+          cd dist
+          zip -r "../dawntoll-${GITHUB_REF_NAME}.zip" .
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "dawntoll-${GITHUB_REF_NAME}.zip" --title "Dawntoll $GITHUB_REF_NAME" --generate-notes
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
