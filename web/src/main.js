@@ -6,6 +6,7 @@ const session = new Session();
 let role = 'host';
 let phase = 'idle';
 let busy = false;
+let answerAccepted = false;
 let qrModule;
 let outputVersion = 0;
 
@@ -18,7 +19,7 @@ function controls() {
   $('host-tab').disabled = busy;
   $('guest-tab').disabled = busy;
   $('create').disabled = busy;
-  $('apply').disabled = busy || phase === 'connecting' || phase === 'connected';
+  $('apply').disabled = busy || answerAccepted || phase === 'connected';
   $('reset').disabled = busy;
 }
 
@@ -34,6 +35,7 @@ async function run(action) {
 
 function selectRole(nextRole) {
   session.close();
+  answerAccepted = false;
   role = nextRole;
   outputVersion++;
   $('host-tab').classList.toggle('selected', role === 'host');
@@ -93,6 +95,7 @@ $('exchange').addEventListener('submit', event => {
   void run(async () => {
     if (role === 'host') {
       await session.accept($('signal-input').value);
+      answerAccepted = true;
       notice('Ответ принят. Устанавливаем прямое соединение…');
     } else {
       const token = await session.join($('signal-input').value);
