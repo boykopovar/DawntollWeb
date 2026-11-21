@@ -71,7 +71,8 @@ async function showOutput(token) {
     qrModule ??= import('https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm');
     const { default: QRCode } = await qrModule;
     if (version !== outputVersion) return;
-    await QRCode.toCanvas($('qr'), link, { width: 220, margin: 3, errorCorrectionLevel: 'L', color: { dark: '#243831', light: '#ffffff' } });
+    const palette = getComputedStyle(document.documentElement);
+    await QRCode.toCanvas($('qr'), link, { width: 256, margin: 3, errorCorrectionLevel: 'L', color: { dark: palette.getPropertyValue('--ink').trim(), light: palette.getPropertyValue('--white').trim() } });
     $('qr').hidden = false;
     $('qr-status').textContent = 'Откройте камерой телефона';
   } catch {
