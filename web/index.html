@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f1">
+  <meta name="description" content="Dawntoll — дожить до рассвета. Прямое соединение для двух пассажиров.">
+  <meta name="referrer" content="no-referrer">
+  <title>Dawntoll — до рассвета</title>
+  <link rel="icon" href="./mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="./" aria-label="Dawntoll, главная"><img src="./mark.svg" alt="" width="32" height="32">DAWNTOLL<span>ДО РАССВЕТА</span></a><span class="build">ПРОТОТИП / 0.1.0</span></header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div class="intro-copy"><p class="eyebrow">КООПЕРАТИВНОЕ ВЫЖИВАНИЕ</p><h1 id="title">Ночь переживём.<br><em>На рассвете — в путь.</em></h1><p class="lead">Поезд встал. Впереди неизвестность, вокруг — заражённые. Найдите припасы, обустройте базу и почините состав.<br>Первый свет — ваш сигнал к отправлению.</p><div class="intro-foot"><span class="sun-symbol">◒</span><span>ОДИН ПОЕЗД. ОДНА КОМАНДА. ОДИН РАССВЕТ.</span></div></div>
+      <div class="landscape" aria-hidden="true"><div class="sun"></div><div class="hills far"></div><div class="hills near"></div><div class="train"><i></i><i></i><i></i></div><div class="rail"></div><div class="landscape-caption"><span>ПОСЛЕДНИЙ ПЕРЕГОН</span><span>05:47 / ПЕРВЫЙ СВЕТ</span></div></div>
+    </section>
+    <section class="station" aria-labelledby="station-title">
+      <div class="section-heading"><div><p class="eyebrow">ПЕРЕД ОТПРАВЛЕНИЕМ</p><h2 id="station-title">Соберите экипаж</h2></div><p>Пока без игры. Проверяем связь между двумя пассажирами.</p></div>
+      <div class="workspace">
+        <section class="connection panel" aria-labelledby="connection-title">
+          <div class="panel-title"><h3 id="connection-title">Соединение</h3><span class="capacity">ХОСТ + 1 ГОСТЬ</span></div>
+          <div class="tabs" role="group" aria-label="Роль в экипаже"><button id="host-tab" class="selected" aria-pressed="true">Создать экипаж</button><button id="guest-tab" aria-pressed="false">Присоединиться</button></div>
+          <p id="instructions" class="instructions">Создайте приглашение и отправьте его попутчику. Он вернёт вам ссылку с ответом.</p>
+          <button id="create" class="primary wide">Создать приглашение</button>
+          <form id="exchange" hidden><label id="input-label" for="signal-input">Ответ гостя</label><textarea id="signal-input" rows="3" spellcheck="false" placeholder="Вставьте ссылку целиком" required maxlength="24000"></textarea><button id="apply" class="primary wide" type="submit">Подключить гостя</button></form>
+          <div id="outgoing" class="outgoing" hidden><div><p id="output-label" class="eyebrow">ВАШЕ ПРИГЛАШЕНИЕ</p><p id="output-hint">Передайте гостю ссылку или QR-код.</p><textarea id="signal-output" readonly rows="2" aria-label="Ссылка для обмена" spellcheck="false"></textarea><button id="copy" class="secondary">Скопировать ссылку</button></div><div class="qr-wrap"><canvas id="qr" aria-label="QR-код ссылки"></canvas><span id="qr-status">QR-код</span></div></div>
+          <p id="notice" class="notice" role="status" aria-live="polite"></p>
+          <button id="reset" class="text-button" hidden>Сбросить соединение</button>
+          <details><summary>Как это работает</summary><p>Хост отправляет приглашение. Гость вставляет его здесь и возвращает ответ. Хост вставляет ответ — открывается прямой зашифрованный канал.</p><p>Нужен современный браузер и HTTPS. Используется публичный STUN для поиска сетевого адреса. При строгом NAT, VPN или блокировке UDP связь может не установиться: попробуйте другую сеть. Ретранслятора TURN нет.</p><p>Ссылки содержат сетевые адреса и ключи рукопожатия. Передавайте их только своему попутчику. После перезагрузки нужно новое приглашение.</p></details>
+        </section>
+        <section class="chat panel" aria-labelledby="chat-title"><div class="panel-title"><h3 id="chat-title">Радиорубка</h3><span id="connection-status" class="status" data-state="idle">Нет связи</span></div><div id="messages" class="messages" role="log" aria-live="polite" aria-label="Сообщения экипажа"><div id="empty-chat" class="empty-chat"><span class="radio-icon" aria-hidden="true">⌁</span><h4>В эфире пока тихо</h4><p>Подключите попутчика.<br>Здесь появятся ваши сообщения.</p></div></div><form id="chat-form" class="composer"><label class="sr-only" for="message">Сообщение попутчику</label><input id="message" placeholder="Сначала установите связь" maxlength="1000" autocomplete="off" disabled required><button id="send" class="primary" disabled>Отправить</button></form><div class="chat-foot"><span>ПРЯМОЙ КАНАЛ / WEBRTC</span><span>История только в этой вкладке</span></div></section>
+      </div>
+    </section>
+    <section class="journey" aria-label="Будущий игровой цикл"><div><span>ИССЛЕДУЙТЕ</span><p>За припасами — за пределы состава.</p></div><div><span>ДЕРЖИТЕСЬ ВМЕСТЕ</span><p>Временная база. Оборона до утра.</p></div><div><span>ВСТРЕЧАЙТЕ РАССВЕТ</span><p>Почините поезд. Продолжите путь.</p></div></section>
+  </main>
+  <footer><span>DAWNTOLL</span><p>Дожить до первого света.</p><span>РАННИЙ ПРОТОТИП · 2026</span></footer>
+</body>
+</html>
