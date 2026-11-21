@@ -18,7 +18,8 @@ export class Session extends EventTarget {
     this.#transport = transport;
     transport.addEventListener('state', event => {
       if (transport !== this.#transport) return;
-      if (event.detail === 'connected') return;
+      if (event.detail === 'connected' && !transport.isOpen) return;
+      if (event.detail === 'connected') this.#ready = true;
       if (event.detail !== 'connected') this.#ready = false;
       this.#emit('state', event.detail);
     });

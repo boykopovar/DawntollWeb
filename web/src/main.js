@@ -96,7 +96,7 @@ $('exchange').addEventListener('submit', event => {
     if (role === 'host') {
       await session.accept($('signal-input').value);
       answerAccepted = true;
-      notice('Ответ принят. Устанавливаем прямое соединение…');
+      if (phase !== 'connected') notice('Ответ принят. Устанавливаем прямое соединение…');
     } else {
       const token = await session.join($('signal-input').value);
       void showOutput(token);

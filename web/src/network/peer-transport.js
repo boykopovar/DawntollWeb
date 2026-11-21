@@ -39,7 +39,6 @@ export class PeerTransport extends EventTarget {
   async answer(description) {
     await this.#peer.setRemoteDescription(description);
     const result = await this.#gather(await this.#peer.createAnswer());
-    this.#watch();
     return result;
   }
   async accept(description) {
@@ -58,5 +57,6 @@ export class PeerTransport extends EventTarget {
     if (this.#channel.bufferedAmount > 65536) throw new Error('Канал занят. Попробуйте через секунду.');
     this.#channel.send(payload);
   }
+  get isOpen() { return this.#channel?.readyState === 'open'; }
   close() { clearTimeout(this.#timer); this.#channel?.close(); this.#peer.close(); }
 }
